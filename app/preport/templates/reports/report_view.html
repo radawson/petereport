@@ -22,8 +22,8 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item"><a href="/product/view/{{ DB_report_query.product.pk}}">{{ DB_report_query.product.name | safe_markdown | bleach}}</a></li>
-              <li class="breadcrumb-item active">{{ DB_report_query.report_id | safe_markdown | bleach}}</li>
+              <li class="breadcrumb-item"><a href="/product/view/{{ DB_report_query.product.pk}}">{{ DB_report_query.product.name | bleach}}</a></li>
+              <li class="breadcrumb-item active">{{ DB_report_query.report_id | bleach}}</li>
             </ol>
           </div>
         </div>
@@ -817,7 +817,32 @@
             },
             xAxis: {
                 type: 'category',
-                data: ["Critical","High","Medium","Low","Info"]
+                data: [{
+                  value: "Critical",
+                  textStyle: {
+                    fontSize:15
+                  }
+                 },{
+                  value: "High",
+                  textStyle: {
+                    fontSize:15
+                  }
+                 }, {
+                  value: "Medium",
+                  textStyle: {
+                    fontSize:15
+                  }
+                 } , {
+                  value: "Low",
+                  textStyle: {
+                    fontSize:15
+                  }
+                 }, {
+                  value: "Info",
+                  textStyle: {
+                    fontSize:15
+                  }
+                 }]
             },
             yAxis: {
               type: 'value',
@@ -921,14 +946,14 @@
   function SaveSummaryImage(doc_type) {
 
         var imgSeveritybar = new Image();
-        imgSeveritybar.src = chartSeveritybar.getConnectedDataURL({
+        imgSeveritybar.src = chartSeveritybar.getDataURL({
             pixelRatio: 2,
             backgroundColor: '#fff'
         });
 
         var imgCWE = new Image();
-        imgCWE.src = chart_CWE.getConnectedDataURL({
-            //pixelRatio: 2,
+        imgCWE.src = chart_CWE.getDataURL({
+            pixelRatio: 2,
             backgroundColor: '#fff'
         });
 
@@ -946,11 +971,13 @@
                 if (json.status == 'success'){
                   if (doc_type == 'PDF'){
                     document.location.href = "/report/download/pdf/{{ DB_report_query.pk }}";
+                    //window.open('/report/download/pdf/{{ DB_report_query.pk }}', '_blank');
                   }
                   else if (doc_type == 'Markdown'){
                     document.location.href = "/report/download/markdown/{{ DB_report_query.pk }}";
+                    //window.open('/report/download/markdown/{{ DB_report_query.pk }}', '_blank');
                   }
-                                        
+
                 }
             }
         })
